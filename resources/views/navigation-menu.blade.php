@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white bg-gray-800 border-b border-gray-100 border-gray-700">
+<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -90,6 +90,9 @@
                     </div>
                 @endif
 
+                <!-- Theme Switcher -->
+                <div class="align-right"><x-bladewind::theme-switcher /></div>
+
                 <!-- Settings Dropdown -->
                 <div class="ms-3 relative">
                     <x-dropdown align="right" width="48">
@@ -121,34 +124,10 @@
                                 {{ __('Profile') }}
                             </x-dropdown-link>
 
-                            <x-dropdown-link id="theme-toggle" href="#">
-                                {{ __('Switch to Dark Mode') }}
-                            </x-dropdown-link>
-
-                             <script>
-                                const toggleButton = document.getElementById('theme-toggle');
-                                const body = document.querySelector('html');
-
-                                // Check for user's theme preference in the cookie
-                                if (body.classList.contains('dark')) {
-                                    toggleButton.textContent = 'Switch to Light Mode';
-                                } else {
-                                    toggleButton.textContent = 'Switch to Dark Mode';
-                                }
-
-                                // Toggle between dark and light mode
-                                toggleButton.addEventListener('click', () => {
-                                    if (body.classList.contains('dark')) {
-                                        body.classList.remove('dark');
-                                        toggleButton.textContent = 'Switch to Dark Mode';
-                                        document.cookie = "theme=light; path=/";
-                                    } else {
-                                        body.classList.add('dark');
-                                        toggleButton.textContent = 'Switch to Light Mode';
-                                        document.cookie = "theme=dark; path=/";
-                                    }
-                                });
-                            </script>
+                            <!-- <x-dropdown-link id="theme-toggle" href="#" onclick="toggleTheme()">
+                                {{ __('Switch Theme') }}
+                            </x-dropdown-link> -->
+                    
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">

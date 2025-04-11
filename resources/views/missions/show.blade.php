@@ -13,7 +13,6 @@
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h2>Mission Details</h2>
-                    <a href="{{ route(name: 'missions.export.docx', $mission->id) }}" class="btn btn-outline-primary">Download DOCX</a>
                     <a href="{{ route('missions.index') }}" class="btn btn-secondary">Back to List</a>
                 </div>
 

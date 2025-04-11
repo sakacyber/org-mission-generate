@@ -10,9 +10,13 @@ use App\Models\Mission;
 use App\Models\Person;
 use App\Models\Department;
 use App\Exports\MissionsExport;
+use Developermithu\Tallcraftui\Traits\WithTcToast;
+
 
 class MissionController extends Controller
 {
+
+    use WithTcToast;
 
     public function index(Request $request)
     {
@@ -30,7 +34,7 @@ class MissionController extends Controller
             })
             ->paginate(10);
 
-        $departments = Department::all();
+        $departments = Department::paginate(20);
 
         return view('missions.index', compact('missions', 'departments'));
     }
@@ -89,9 +93,8 @@ class MissionController extends Controller
         return redirect()->route('missions.index')->with('success', 'Mission updated!');
     }
 
-    public function destroy($id)
+    public function destroy(Mission $mission)
     {
-        $mission = Mission::findOrFail($id);
         $mission->delete();
         return redirect()->route('missions.index')->with('success', 'Mission deleted!');
     }

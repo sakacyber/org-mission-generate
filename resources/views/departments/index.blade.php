@@ -5,51 +5,52 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <div class="container">
-                <form method="GET" class="mb-3">
-                    <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="Search by Department Name" class="form-control mb-2">
-                    <button class="btn btn-secondary">Search</button>
-                </form>
+        
 
-                <a href="{{ route('departments.create') }}" class="btn btn-primary mb-3">Add New Department</a>
-                <a href="{{ route('departments.export', ['format' => 'csv']) }}"
-                    class="btn btn-outline-secondary mb-3">Export
-                    CSV</a>
-                <a href="{{ route('departments.export', ['format' => 'xlsx']) }}"
-                    class="btn btn-outline-secondary mb-3">Export
-                    Excel</a>
+                <div class="p-4 align-right">
+                    <x-tc-button link="{{ route('departments.create')}}">Add New Department</x-tc-button>
+                </div>
+                
+                <x-tc-card class="max-w">
+                    <x-tc-table :paginate="$departments" searchable hoverable>
+                        <x-slot:heading>
+                            <x-tc-th label="#" />
+                            <x-tc-th label="Name" />
+                            <x-tc-th label="Created" />
+                            <x-tc-th label="People" />
+                            <x-tc-th label="Notes" />
+                            <x-tc-th label="Action" />
+                        </x-slot:heading>
+                
+                        @forelse ($departments as $department)
+                            <x-tc-tr>
+                                <x-tc-td :label="$department->id" />
+                                <x-tc-td :label="$department->name" />
+                                <x-tc-td :label="$department->created_at" />
+                                <x-tc-td :label="$department->people->count()" />
+                                <x-tc-td :label="$department->notes" />
 
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Department</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($departments as $department)
-                            <tr>
-                                <td>{{ $department->name }}</td>
-                                <td>
-                                    <a href="{{ route('departments.show', $department) }}"
-                                        class="btn btn-info btn-sm">View</a>
-                                    <a href="{{ route('departments.edit', $department) }}"
-                                        class="btn btn-warning btn-sm">Edit</a>
-                                    <form action="{{ route('departments.destroy', $department) }}" method="POST"
-                                        class="d-inline">
-                                        @csrf @method('DELETE')
-                                        <button onclick="return confirm('Are you sure?')"
-                                            class="btn btn-danger btn-sm">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                <x-tc-td class="space-x-2">
+                                    <x-tc-dropdown>
+                                        <x-slot:trigger>
+                                            <x-tc-button icon="ellipsis-vertical" flat gray circle />
+                                        </x-slot:trigger>
+                                        <x-tc-dropdown-item label="View" icon="eye" link="{{ route('departments.show', $department) }}" />
+                                        <x-tc-dropdown-item label="Edit" icon="pencil" link="{{ route('departments.edit', $department) }}" />
+                                        <x-tc-dropdown-item label="Delete" icon="trash" link="{{ route('departments.destroy', $department) }}" />
+                                    </x-tc-dropdown>
+                                </x-tc-td>
+
+                            </x-tc-tr>
+                        @empty
+                            <x-tc-not-found />
+                        @endforelse
+                    </x-tc-table>
+                </x-tc-card>
 
             </div>
         </div>

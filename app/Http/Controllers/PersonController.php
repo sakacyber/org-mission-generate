@@ -11,9 +11,12 @@ class PersonController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $people = Person::all();
+        $search = $request->get('search');
+        $people = Person::when($search, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%');
+        })->paginate(10);
         return view('people.index', compact('people')); 
     }
 
@@ -22,7 +25,7 @@ class PersonController extends Controller
      */
     public function create()
     {
-        $departments = Department::all();
+        $departments = Department::paginate(20);
         return view('people.create', compact('departments')); 
     }
 
