@@ -22,63 +22,66 @@
             @endif
 
             <div class="p-4 align-right">
-                <x-tc-button><a href="{{ route('missions.create')}}">Add New Mission</a></x-bladewind::button>
-                <!-- <x-bladewind::button>Export CSV</x-bladewind::button> -->
-                <!-- <x-bladewind::button>Export Excel</x-bladewind::button> -->
-                <!-- <a href="{{ route('missions.export', ['format' => 'csv']) }}" class="btn btn-outline-secondary mb-3">Export
-                CSV</a>
-            <a href="{{ route('missions.export', ['format' => 'xlsx']) }}" class="btn btn-outline-secondary mb-3">Export
-                Excel</a> -->
+                <x-tc-button><a href="{{ route('missions.create')}}">Add New Mission</a></x-tc-button>
             </div>
 
-            <x-tc-card class="max-w">
-                <x-tc-table :paginate="$missions" searchable hoverable>
+            <x-card class="max-w">
+                <x-table :paginate="$missions" searchable hoverable>
                     <x-slot:heading>
-                        <x-tc-th label="#" />
-                        <x-tc-th label="Goal" />
-                        <x-tc-th label="Place" />
-                        <x-tc-th label="Date" />
-                        <x-tc-th label="People" />
-                        <x-tc-th label="Action" />
+                        <x-th label="#" />
+                        <x-th label="Goal" />
+                        <x-th label="Place" />
+                        <x-th label="People" />
+                        <x-th label="Date" class="text-center"/>
+                        <x-th label="Action" />
                     </x-slot:heading>
 
                     @forelse ($missions as $mission)
-                        <x-tc-tr>
-                            <x-tc-td :label="$mission->id" />
-                            <x-tc-td :label="$mission->goal" />
-                            <x-tc-td :label="$mission->place" />
-                            <x-tc-td class="text-center">{{ $mission->start_date }}
-                                <p>{{ $mission->end_date }}</p>
-                            </x-tc-td>
-                            <x-tc-td>
-                                @foreach($mission->people as $person)
-                                    {{ $person->name }} ({{ $person->department->name }})<br>
-                                @endforeach
-                            </x-tc-td>
+                        <x-tr>
+                            <x-td :label="$mission->id" />
+                            <x-td :label="$mission->goal" />
+                            <x-td :label="$mission->place" />
 
-                            <x-tc-td class="space-x-2">
-                                <x-tc-dropdown>
+                            <x-td>
+                                @foreach($mission->people->take(2) as $person)
+                                    <li>{{ $person->name }}</li>
+                                @endforeach
+                                @if($mission->people->count() > 2)
+                                    <li class="italic text-gray-500">+{{ $mission->people->count() - 2 }} more</li>
+                                @endif
+                            </x-td>
+                            <x-td class="text-center">{{ $mission->start_date }}
+                                <p>{{ $mission->end_date }}</p>
+                            </x-td>
+                            <x-td class="space-x-2">
+                                <x-dropdown>
                                     <x-slot:trigger>
                                         <x-tc-button icon="ellipsis-vertical" flat gray circle />
                                     </x-slot:trigger>
 
-                                    <x-tc-dropdown-item label="View" icon="eye"
-                                        link="{{ route('missions.show', $mission->id) }}" />
-                                    <x-tc-dropdown-item label="Edit" icon="pencil-square"
-                                        link="{{ route('missions.edit', $mission->id) }}" />
-                                    <x-tc-dropdown-item label="Delete" icon="trash"
+                                    <x-dropdown-item label="View" icon="eye" link="{{ route('missions.show', $mission) }}" />
+                                    <x-dropdown-item label="Edit" icon="pencil-square"
+                                        link="{{ route('missions.edit', $mission) }}" />
+                                    <x-dropdown-item label="Delete" icon="trash"
                                         link="{{ route('missions.destroy', $mission) }}" />
-                                </x-tc-dropdown>
-                            </x-tc-td>
+                                </x-dropdown>
+                            </x-td>
 
-                        </x-tc-tr>
+                        </x-tr>
                     @empty
-                        <x-tc-not-found />
+                        <x-not-found />
                     @endforelse
-                </x-tc-table>
-            </x-tc-card>
+                </x-table>
+            </x-card>
 
 
+            <x-tc-button label="MD" x-on:click="$openModal('blur-md')" primary />
+
+            <x-modal name="blur-md" blur="md">
+                <x-card title="Blur SM">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                </x-card>
+            </x-modal>
 
         </div>
 

@@ -2,6 +2,11 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
             {{ __('Missions') }}
+            <x-breadcrumb>
+                <x-breadcrumb-item label="Home" :href="route('dashboard')" icon-none />
+                <x-breadcrumb-item label="Missions" :href="route('missions.index')" />
+                <x-breadcrumb-item label="Create" />
+            </x-breadcrumb>
         </h2>
     </x-slot>
 
@@ -10,7 +15,7 @@
 
 
             <div class="container">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight pb-4">
                     {{ __('Create Mission') }}
                 </h2>
 
@@ -21,7 +26,6 @@
                     <div class="mb-3">
                         <!-- <label for="goal" class="form-label">Goal</label> -->
                         <!-- <input type="text" class="form-control" id="goal" name="goal" required> -->
-                        <!-- <x-bladewind::input name="goal" label="Goal" required="true" /> -->
                         <x-tc-input name="goal" label="Goal" required />
                     </div>
 
@@ -50,16 +54,12 @@
                     </div>
 
                     <div class="mb-3">
-                        <!-- <label for="people_id" class="form-label">Assign People</label> -->
-                        
-                       <select name="people_id[]" label="Assign People" multiple required>
-                            @foreach ($people as $person)
-                                <option value="{{ $person->id }}">{{ $person->name }} ({{ $person->department->name }})</option>
-                            @endforeach
-                        </select>
+                        <x-tc-select name="people_id[]" label="Assign People" :options="$people" wire:model="people_id" hint="Multi people can select" multiple required />
+
                     </div>
-                    
-                    <x-button type="submit">Create Mission</x-button>
+
+
+                    <x-tc-button type="submit">Create Mission</x-button>
                 </form>
             </div>
         </div>

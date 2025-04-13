@@ -91,7 +91,7 @@
                 @endif
 
                 <!-- Theme Switcher -->
-                <div class="align-right"><x-bladewind::theme-switcher /></div>
+                <div class="align-right"><x-icon name="moon" class="w-5 h-5" id="theme-toggle" onclick="toggleTheme()"/></div>
 
                 <!-- Settings Dropdown -->
                 <div class="ms-3 relative">

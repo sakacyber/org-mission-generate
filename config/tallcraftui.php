@@ -24,7 +24,7 @@ return [
      * 'prefix' => ''       // <x-input />
      * 'prefix' => 'tc-'    // <x-tc-input />
      */
-    'prefix' => env('TALLCRAFTUI_PREFIX', 'tc-'),
+    'prefix' => env('TALLCRAFTUI_PREFIX', ''),
 
     /**
      * --------------------------------------------------------------------------
@@ -125,8 +125,8 @@ return [
     ],
 
     'toast' => [
-        'position' => ToastPosition::TOP_RIGHT->value,
-        'showCloseIcon' => true,
+        'position' => ToastPosition::BOTTOM_RIGHT->value,
+        'showCloseIcon' => false,
         'showProgress' => false,
         'timeout' => 3000,
     ],

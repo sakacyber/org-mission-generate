@@ -41,7 +41,9 @@ class MissionController extends Controller
 
     public function create()
     {
-        $people = Person::paginate(20);
+        $fields = ['id', 'name'];
+        $people = Person::paginate(20, $fields)->pluck('name','id');
+
         return view('missions.create', compact('people'));
     }
 
@@ -62,20 +64,18 @@ class MissionController extends Controller
         return redirect()->route('missions.index')->with('success', 'Mission created!');
     }
 
-    public function show($id)
+    public function show(Mission $mission)
     {
-        $mission = Mission::with('people.department')->findOrFail($id);
         return view('missions.show', compact('mission'));
     }
 
-    public function edit($id)
+    public function edit(Mission $mission)
     {
-        $mission = Mission::with('people')->findOrFail($id);
-        $people = Person::with('department')->get();
+        $people = Person::paginate(20);
         return view('missions.edit', compact('mission', 'people'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Mission $mission)
     {
         $data = $request->validate([
             'goal' => 'required',
@@ -86,7 +86,6 @@ class MissionController extends Controller
             'people_id' => 'required|array',
         ]);
 
-        $mission = Mission::findOrFail($id);
         $mission->update($data);
         $mission->people()->attach($data['people_id']);
 
@@ -164,9 +163,8 @@ class MissionController extends Controller
         return response()->download($tempFilePath)->deleteFileAfterSend(true);
     }
 
-    public function generatePdf($id)
+    public function generatePdf(Mission $mission)
     {
-        $mission = Mission::with('people.department')->findOrFail($id);
         $mission->mission_date = Carbon::parse($mission->mission_date)->translatedFormat('d-m-Y ម.អ');
         $mission->ceo_signature_date = Carbon::parse($mission->ceo_signature_date)->translatedFormat('d-m-Y ម.អ');
 

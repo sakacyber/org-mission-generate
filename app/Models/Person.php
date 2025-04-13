@@ -12,6 +12,7 @@ class Person extends Model
 
     protected $fillable = [
         'name',
+        'gender',
         'role',
         'department_id',
         'notes',
