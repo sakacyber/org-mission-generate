@@ -45,7 +45,6 @@
 
 <body class="font-sans antialiased">
     <x-banner />
-    <x-tc-toast />
 
     <div class="min-h-screen bg-gray-200 dark:bg-gray-700 dark:text-white">
         @livewire('navigation-menu')

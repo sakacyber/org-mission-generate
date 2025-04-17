@@ -21,17 +21,21 @@ class MissionController extends Controller
     public function index(Request $request)
     {
         $missions = Mission::with('people.department')
+            // search by goal
             ->when($request->search, function ($query) use ($request) {
                 return $query->where('goal', 'like', "%{$request->search}%");
             })
+            // search by department
             ->when($request->department_id, function ($query) use ($request) {
                 return $query->whereHas('people', function ($query) use ($request) {
                     return $query->where('department_id', $request->department_id);
                 });
             })
+            // sort
             ->when($request->sort, function ($query) use ($request) {
                 return $query->orderBy($request->sort);
             })
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         $departments = Department::paginate(20);
@@ -42,7 +46,7 @@ class MissionController extends Controller
     public function create()
     {
         $fields = ['id', 'name'];
-        $people = Person::paginate(20, $fields)->pluck('name','id');
+        $people = Person::orderBy('created_at', 'desc')->paginate(20, $fields)->pluck('name', 'id');
 
         return view('missions.create', compact('people'));
     }
@@ -61,7 +65,10 @@ class MissionController extends Controller
         $mission = Mission::create($data);
         $mission->people()->attach($data['people_id']);
 
-        return redirect()->route('missions.index')->with('success', 'Mission created!');
+        return redirect()->route('missions.index', [
+            'page' => request('page'),
+            'search' => request('search'),
+        ])->with('success', 'Mission created!');
     }
 
     public function show(Mission $mission)
@@ -71,7 +78,8 @@ class MissionController extends Controller
 
     public function edit(Mission $mission)
     {
-        $people = Person::paginate(20);
+        $fields = ['id', 'name'];
+        $people = Person::orderBy('created_at', 'desc')->get();
         return view('missions.edit', compact('mission', 'people'));
     }
 
@@ -84,18 +92,25 @@ class MissionController extends Controller
             'end_date' => 'required|date',
             'signature_date' => 'required|date',
             'people_id' => 'required|array',
+            'person_id.*' => 'exists:people,id',
         ]);
 
         $mission->update($data);
-        $mission->people()->attach($data['people_id']);
+        $mission->people()->sync($data['people_id']);
 
-        return redirect()->route('missions.index')->with('success', 'Mission updated!');
+        return redirect()->route('missions.index', [
+            'page' => request('page'),
+            'search' => request('search'),
+        ])->with('success', 'Mission updated!');
     }
 
     public function destroy(Mission $mission)
     {
         $mission->delete();
-        return redirect()->route('missions.index')->with('success', 'Mission deleted!');
+        return redirect()->route('missions.index', [
+            'page' => request('page'),
+            'search' => request('search'),
+        ])->with('success', 'Mission deleted!');
     }
 
     public function export($format)

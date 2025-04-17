@@ -12,14 +12,14 @@
                 <div id="app">
                     <mission-dashboard></mission-dashboard>
 
-                    <x-stat icon="users" title="Total users" number="10,500" />
-                    <x-stat icon="users" title="Total users" number="10,500" tooltip increase="12.5%" />
-                    <x-stat icon="users" title="Total users" number="10,500" tooltip="User decrease" decrease="5%" />
+                    <x-tc-stat icon="users" title="Total users" number="10,500" />
+                    <x-tc-stat icon="users" title="Total users" number="10,500" tooltip increase="12.5%" />
+                    <x-tc-stat icon="users" title="Total users" number="10,500" tooltip="User decrease" decrease="5%" />
 
 
-                    <x-stat icon-right="users" title="Total users" number="10,500" class="w-56" primary />
-                    <x-stat icon-right="users" title="Total users" number="10,500" class="w-56" amber />
-                    <x-stat icon-right="users" title="Total users" number="10,500" class="w-56" rose />
+                    <x-tc-stat icon-right="users" title="Total users" number="10,500" class="w-56" primary />
+                    <x-tc-stat icon-right="users" title="Total users" number="10,500" class="w-56" amber />
+                    <x-tc-stat icon-right="users" title="Total users" number="10,500" class="w-56" rose />
                 </div>
 
             </div>

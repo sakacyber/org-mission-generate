@@ -2,11 +2,11 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Missions') }}
-            <x-breadcrumb>
-                <x-breadcrumb-item label="Home" :href="route('dashboard')" icon-none />
-                <x-breadcrumb-item label="Missions" :href="route('missions.index')" />
-                <x-breadcrumb-item label="Edit" />
-            </x-breadcrumb>
+            <x-tc-breadcrumb>
+                <x-tc-breadcrumb-item label="Home" :href="route('dashboard')" icon-none />
+                <x-tc-breadcrumb-item label="Missions" :href="route('missions.index')" />
+                <x-tc-breadcrumb-item label="Edit" />
+            </x-tc-breadcrumb>
         </h2>
     </x-slot>
 
@@ -16,7 +16,7 @@
 
 
             <div class="containter max-w">
-                <h2 class="text-2xl font-bold mb-6">✏️ Edit Mission</h2>
+                <h2 class="text-2xl font-bold mb-4">✏️ Edit Mission</h2>
 
                 @if ($errors->any())
                     <div class="mb-4 bg-red-100 text-red-800 p-4 rounded">
@@ -29,12 +29,15 @@
                     </div>
                 @endif
 
-                <form action="{{ route('missions.update', $mission->id) }}" method="POST"
-                    class="space-y-6 bg-white dark:bg-gray-800 p-6 rounded shadow">
+                <form action="{{ route('missions.update', [
+    'mission' => $mission->id,
+    'page' => request('page'),
+    'search' => request('search'),
+]) }}" method="POST" class="space-y-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
                     @csrf
                     @method('PUT')
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block font-medium mb-1">Mission Id</label>
                             <input type="text" value="{{ $mission->id }}"
@@ -42,62 +45,78 @@
                                 readonly>
                         </div>
                         <div>
-                            <label class="block font-medium mb-1">Signature Date</label>
-                            <input type="date" name="signature_date"
-                                value="{{ old('signature_date', $mission->signature_date) }}"
+                            <label class="block font-medium mb-1">📅 Create Date</label>
+                            <input type="datetime" 
+                                value="{{ old('created_at', $mission->created_at) }}"
                                 class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
                                 readonly>
                         </div>
-                    </div>
 
-                    <div>
-                        <label class="block font-medium mb-1">Mission Goal</label>
-                        <input type="text" name="goal" value="{{ old('goal', $mission->goal) }}"
-                            class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                            required>
-                    </div>
-
-                    <div>
-                        <label class="block font-medium mb-1">Mission Location</label>
-                        <input type="text" name="place" value="{{ old('place', $mission->place) }}"
-                            class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                            required>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block font-medium mb-1">Start Date</label>
+                            <label class="block font-medium mb-1">🎯 Goal</label>
+                            <input type="text" name="goal" value="{{ old('goal', $mission->goal) }}"
+                                class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                                required>
+                        </div>
+
+                        <div>
+                            <label class="block font-medium mb-1">📍 Location</label>
+                            <input type="text" name="place" value="{{ old('place', $mission->place) }}"
+                                class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                                required>
+                        </div>
+
+                        <div>
+                            <label class="block font-medium mb-1">📅 Start Date</label>
                             <input type="date" name="start_date" value="{{ old('start_date', $mission->start_date) }}"
                                 class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
                                 required>
                         </div>
                         <div>
-                            <label class="block font-medium mb-1">End Date</label>
+                            <label class="block font-medium mb-1">📅 End Date</label>
                             <input type="date" name="end_date" value="{{ old('end_date', $mission->end_date) }}"
                                 class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
                                 required>
                         </div>
+
+                        <div>
+                            <label class="block font-medium mb-1">👥 Assing People</label>
+                            <input type="text" value="{{ $mission->people->count() }} People"
+                                class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                                readonly>
+                        </div>
+                        <div>
+                            <label class="block font-medium mb-1">📅 Signature Date</label>
+                            <input type="date" name="signature_date" value="{{ old('signature_date', $mission->signature_date) }}"
+                                class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                                readonly>
+                        </div>
                     </div>
 
-                    <div>
-                        <label class="block font-medium mb-1">Assign People</label>
-                        <select name="people_id[]" multiple required
-                            class="form-multiselect w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white">
-                            @foreach($people as $person)
-                                <option value="{{ $person->id }}" {{ in_array($person->id, $mission->people->pluck('id')->toArray()) ? 'selected' : '' }}>
-                                    {{ $person->name }} ({{ $person->department->name ?? 'No Dept' }})
+                    
+
+
+                    <div class="mb-3">
+                        <x-select name="people_id[]" label="Assign People" :options="$people->pluck('name', 'id')" wire:model="people_id" 
+                            hint="Multi people can select" multiple required>
+                            @foreach($people as $id => $name)
+                                <option value="{{ $id }}" {{ in_array($id, $mission->people->pluck('id')->toArray()) ? 'selected' : '' }} label="{{ $name }}">
+                                    {{ $name }} 
                                 </option>
                             @endforeach
-                        </select>
-                        <small class="text-gray-500 dark:text-gray-400">Hold Ctrl/Cmd to select multiple</small>
+                        </x-select>
                     </div>
 
+
+
                     <div class="flex justify-between">
-                        <a href="{{ route('missions.index') }}"
-                            class="px-4 py-2 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600">←
+                        <a href="{{ route('missions.index', [
+    'page' => request('page'),
+    'search' => request('search'),
+]) }}" class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600">←
                             Cancel</a>
-                        <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">💾
-                            Update Mission</button>
+                        <x-tc-button type="submit" class="px-6 py-2 text-white hover:bg-blue-700">💾
+                            Update Mission</x-tc-button>
                     </div>
                 </form>
             </div>
