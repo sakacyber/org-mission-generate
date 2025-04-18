@@ -98,7 +98,7 @@ return [
 
     'modal' => [
         'size' => Size::LG->value,
-        'blur' => false, // Allowed: true, false
+        'blur' => true, // Allowed: true, false
         'trap-focus' => true, // Allowed: true, false
         'position' => Position::TOP->value,
         'border-radius' => BorderRadius::RoundedLg->value,

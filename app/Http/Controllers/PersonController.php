@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Person;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class PersonController extends Controller
 {
+
+    public function __construct()
+    {
+        // Share this variable with all views used by this controller
+        View::share('appTitle', 'People');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -16,7 +24,9 @@ class PersonController extends Controller
         $search = $request->get('search');
         $people = Person::when($search, function ($query, $search) {
             return $query->where('name', 'like', '%' . $search . '%');
-        })->paginate(10);
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
         return view('people.index', compact('people')); 
     }
 
@@ -25,7 +35,7 @@ class PersonController extends Controller
      */
     public function create()
     {
-        $departments = Department::paginate(20);
+        $departments = Department::paginate(20)->pluck('name', 'id');
         return view('people.create', compact('departments')); 
     }
 
@@ -34,7 +44,14 @@ class PersonController extends Controller
      */
     public function store(Request $request)
     {
-        Person::create($request->all());
+        $data = $request->validate([
+            'name' => 'required',
+            'role' => 'required',
+            'department_id' => 'required|exists:departments,id',
+            'notes' => 'nullable',
+        ]);
+
+        Person::create($data);
         return redirect()->route('people.index')->with('success', 'Person created successfully.');
     }
 
@@ -51,7 +68,8 @@ class PersonController extends Controller
      */
     public function edit(Person $person)
     {
-        return view('people.edit', compact('person'));
+        $departments = Department::paginate(20);
+        return view('people.edit', compact('person', 'departments'));
     }
 
     /**
@@ -59,7 +77,14 @@ class PersonController extends Controller
      */
     public function update(Request $request, Person $person)
     {
-        $person->update($request->all());
+        $data = $request->validate([
+            'name' => 'required',
+            'role' => 'required',
+            'department_id' => 'required|exists:departments,id',
+            'notes' => 'nullable',
+        ]);
+
+        $person->update($data);
         return redirect()->route('people.index')->with('success', 'Person updated successfully.');
     }
 

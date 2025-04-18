@@ -14,7 +14,6 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
 
-
             <div class="container">
                 <div class="flex justify-between items-center mb-6">
                     <div>
@@ -25,20 +24,15 @@
 
 
                     <div class="space-x-2">
-                        <a href="{{ route('missions.index', [
-    'page' => request('page'),
-    'search' => request('search'),
-]) }}" class="inline-flex items-center px-3 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-sm font-medium text-gray-800 dark:text-white rounded-md">
-                            ⬅ Back
-                        </a>
-
-
-                        <x-tc-button><a href="{{ route('missions.edit', [
-    'mission' => $mission->id,
-    'page' => request('page'),
-    'search' => request('search'),
-]) }}">✏️ Edit Mission
-                            </a></x-tc-button>
+                        <x-tc-button label="⬅ Back" :link="route('missions.index', [
+        'page' => request('page'),
+        'search' => request('search'),
+    ])" white />
+                        <x-tc-button label="✏️ Edit Mission" :link="route('missions.edit', [
+        'mission' => $mission->id,
+        'page' => request('page'),
+        'search' => request('search'),
+    ])" />
 
                     </div>
                 </div>

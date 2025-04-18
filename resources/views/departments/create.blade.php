@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Departments') }}
+            {{$appTitle}}
         </h2>
     </x-slot>
 
@@ -9,22 +9,24 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
 
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Create Department') }}
-            </h2>
 
-            <div class="container">
-                <h2>Create Department</h2>
-                <form action="{{ route('departments.store') }}" method="POST">
+            <div class="max-w mx-auto p-6 bg-white rounded-2xl shadow-lg dark:bg-gray-800">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200">Create New {{$appTitle}}</h2>
+
+                <form action="{{ route('departments.store') }}" method="POST" class="space-y-6">
                     @csrf
-                    <div class="form-group">
-                        <label for="name">Department Name</label>
-                        <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
+                    <x-tc-input type="text" name="name" label="Name" value="{{ old('name') }}" required />
+                    <x-tc-textarea name="notes" label="Notes" rows="4" auto-resize />
+
+                    <div class="flex justify-end space-x-4">
+                        <x-tc-button label="Cancel" :link="route('departments.index')" white />
+                        <x-tc-button type="submit" label="Create" />
                     </div>
-                    <button type="submit" class="btn btn-success mt-3">Create Department</button>
-                    <a href="{{ route('departments.index') }}" class="btn btn-secondary mt-3">Back to Departments</a>
                 </form>
             </div>
+
+
+
 
         </div>
     </div>

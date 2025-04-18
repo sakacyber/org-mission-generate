@@ -11,12 +11,19 @@ use App\Models\Person;
 use App\Models\Department;
 use App\Exports\MissionsExport;
 use Developermithu\Tallcraftui\Traits\WithTcToast;
-
+use Illuminate\Support\Facades\View;
 
 class MissionController extends Controller
 {
 
     use WithTcToast;
+
+
+    public function __construct()
+    {
+        // Share this variable with all views used by this controller
+        View::share('appTitle', 'Missions');
+    }
 
     public function index(Request $request)
     {

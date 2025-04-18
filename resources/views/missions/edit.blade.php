@@ -38,85 +38,47 @@
                     @method('PUT')
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block font-medium mb-1">Mission Id</label>
-                            <input type="text" value="{{ $mission->id }}"
-                                class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                                readonly>
-                        </div>
-                        <div>
-                            <label class="block font-medium mb-1">📅 Create Date</label>
-                            <input type="datetime" 
-                                value="{{ old('created_at', $mission->created_at) }}"
-                                class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                                readonly>
-                        </div>
+                        <x-tc-input type="text" label="Mission Id" value="{{ $mission->id }}" readonly />
 
-                        <div>
-                            <label class="block font-medium mb-1">🎯 Goal</label>
-                            <input type="text" name="goal" value="{{ old('goal', $mission->goal) }}"
-                                class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                                required>
-                        </div>
+                        <x-tc-input type="text" label="📅 Create Date"
+                            value="{{ $mission->created_at->format('d-M-Y') }}" readonly />
 
-                        <div>
-                            <label class="block font-medium mb-1">📍 Location</label>
-                            <input type="text" name="place" value="{{ old('place', $mission->place) }}"
-                                class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                                required>
-                        </div>
+                        <x-tc-input type="text" name="goal" label="🎯 Goal" 
+                            value="{{ old('goal', $mission->goal) }}" required />
 
-                        <div>
-                            <label class="block font-medium mb-1">📅 Start Date</label>
-                            <input type="date" name="start_date" value="{{ old('start_date', $mission->start_date) }}"
-                                class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                                required>
-                        </div>
-                        <div>
-                            <label class="block font-medium mb-1">📅 End Date</label>
-                            <input type="date" name="end_date" value="{{ old('end_date', $mission->end_date) }}"
-                                class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                                required>
-                        </div>
+                        <x-tc-input type="text" name="place" label="📍 Location"
+                            value="{{ old('place', $mission->place) }}" required />
 
-                        <div>
-                            <label class="block font-medium mb-1">👥 Assing People</label>
-                            <input type="text" value="{{ $mission->people->count() }} People"
-                                class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                                readonly>
-                        </div>
-                        <div>
-                            <label class="block font-medium mb-1">📅 Signature Date</label>
-                            <input type="date" name="signature_date" value="{{ old('signature_date', $mission->signature_date) }}"
-                                class="form-input w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
-                                readonly>
-                        </div>
+                        <x-tc-input type="date" name="start_date" label="📅 Start Date"
+                            value="{{ old('start_date', $mission->start_date) }}" required />
+
+                        <x-tc-input type="date" name="end_date" label="📅 End Date"
+                            value="{{ old('end_date', $mission->end_date) }}" required />
+
+                        <x-tc-input type="text" label="👥 Assing People" value="{{ $mission->people->count() }} People"
+                            readonly />
+
+                        <x-tc-input type="text" name="signature_date" label="📅 Signature Date"
+                            value="{{ $mission->signature_date }}" readonly />
                     </div>
 
-                    
+                    <x-tc-select name="people_id[]" label="Assign People" :options="$people->pluck('name', 'id')"
+                        hint="Multi people can select" multiple required>
+                        @foreach($people as $id => $name)
+                            <option value="{{ $id }}" {{ in_array($id, $mission->people->pluck('id')->toArray()) ? 'selected' : '' }} label="{{ $name }}">
+                                {{ $name }}
+                            </option>
+                        @endforeach
+                    </x-tc-select>
 
 
-                    <div class="mb-3">
-                        <x-select name="people_id[]" label="Assign People" :options="$people->pluck('name', 'id')" wire:model="people_id" 
-                            hint="Multi people can select" multiple required>
-                            @foreach($people as $id => $name)
-                                <option value="{{ $id }}" {{ in_array($id, $mission->people->pluck('id')->toArray()) ? 'selected' : '' }} label="{{ $name }}">
-                                    {{ $name }} 
-                                </option>
-                            @endforeach
-                        </x-select>
-                    </div>
-
-
-
-                    <div class="flex justify-between">
+                    <div class="flex justify-end space-x-4">
                         <a href="{{ route('missions.index', [
     'page' => request('page'),
     'search' => request('search'),
 ]) }}" class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600">←
                             Cancel</a>
-                        <x-tc-button type="submit" class="px-6 py-2 text-white hover:bg-blue-700">💾
-                            Update Mission</x-tc-button>
+                        <x-tc-button type="submit" label="Update Mission" />
                     </div>
                 </form>
             </div>

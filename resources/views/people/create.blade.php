@@ -9,39 +9,23 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
 
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Create People') }}
-            </h2>
+            <div class="max-w mx-auto p-6 bg-white rounded-2xl shadow dark:bg-gray-800">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200">Create New {{$appTitle}}</h2>
 
-            <form method="POST" action="{{ route('people.store') }}">
-                @csrf
+                <form action="{{ route('people.store') }}" method="POST" class="space-y-6">
+                    @csrf
+                    <x-tc-input type="text" name="name" label="Name" value="{{ old('name') }}" required />
+                    <x-tc-input type="text" name="role" label="Role" value="{{ old('role') }}" required />
+                    <x-tc-select name="department_id" label="Department" :options="$departments" required />
+                    <x-tc-textarea name="notes" label="Notes" rows="4" value="{{ old('notes') }}" auto-resize/>
 
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
-                </div>
+                    <div class="flex justify-end space-x-4">
+                        <x-tc-button label="Cancel" :link="route('people.index')" white />
+                        <x-tc-button type="submit" label="Create People" />
+                    </div>
+                </form>
+            </div>
 
-                <div class="mb-3">
-                    <label for="role" class="form-label">Role</label>
-                    <input type="text" class="form-control" id="role" name="role" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="department_id" class="form-label">Department</label>
-                    <select multiple class="form-control" id="department_id" name="department_id" required>
-                        @foreach ($departments as $dep)
-                            <option value="{{ $dep->id }}">{{ $dep->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="notes" class="form-label0">Notes</label>
-                    <input type="text" class="form-control" id="notes" name="notes">
-                </div>
-
-                <button type="submit" class="btn btn-success">Create</button>
-            </form>
 
         </div>
     </div>

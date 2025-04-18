@@ -5,17 +5,26 @@ namespace App\Http\Controllers;
 use App\Exports\DepartmentsExport;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class DepartmentController extends Controller
 {
     //
+
+    public function __construct()
+    {
+        // Share this variable with all views used by this controller
+        View::share('appTitle', 'Department');
+    }
 
     public function index(Request $request)
     {
         $search = $request->get('search');
         $departments = Department::when($search, function ($query, $search) {
             return $query->where('name', 'like', '%' . $search . '%');
-        })->paginate(10);
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
 
         return view('departments.index', compact('departments')); 
     }
@@ -33,7 +42,12 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        Department::create($request->all());
+        $data = $request->validate([
+            'name' => 'required',
+            'notes' => 'required',
+        ]);
+
+        Department::create($data);
         return redirect()->route('departments.index')->with('success', 'Department created successfully.');
     }
 
@@ -42,7 +56,8 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        return view('departments.show', compact('department')); 
+        $people = $department->people()->paginate(10);
+        return view('departments.show', compact('department', 'people')); 
     }
 
     /**
@@ -50,7 +65,7 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
-        return view('departments.edit', compact('department')); // You'll create this view later
+        return view('departments.edit', compact('department')); 
     }
 
     /**
