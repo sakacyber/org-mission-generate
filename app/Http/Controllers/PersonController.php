@@ -68,7 +68,7 @@ class PersonController extends Controller
      */
     public function edit(Person $person)
     {
-        $departments = Department::paginate(20);
+        $departments = Department::paginate(20)->pluck('name', 'id');
         return view('people.edit', compact('person', 'departments'));
     }
 

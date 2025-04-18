@@ -1,7 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Missions') }}
+            {{ $appTitle }}
+
             <x-tc-breadcrumb>
                 <x-tc-breadcrumb-item label="Home" :href="route('dashboard')" icon-none />
                 <x-tc-breadcrumb-item label="Missions" :href="route('missions.index')" />
@@ -13,10 +14,11 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-
-
             <div class="containter max-w">
-                <h2 class="text-2xl font-bold mb-4">✏️ Edit Mission</h2>
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Edit {{$appTitle}}</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Edit information about this {{$appTitle}}</p>
+                </div>
 
                 @if ($errors->any())
                     <div class="mb-4 bg-red-100 text-red-800 p-4 rounded">
@@ -43,8 +45,8 @@
                         <x-tc-input type="text" label="📅 Create Date"
                             value="{{ $mission->created_at->format('d-M-Y') }}" readonly />
 
-                        <x-tc-input type="text" name="goal" label="🎯 Goal" 
-                            value="{{ old('goal', $mission->goal) }}" required />
+                        <x-tc-input type="text" name="goal" label="🎯 Goal" value="{{ old('goal', $mission->goal) }}"
+                            required />
 
                         <x-tc-input type="text" name="place" label="📍 Location"
                             value="{{ old('place', $mission->place) }}" required />
@@ -62,10 +64,10 @@
                             value="{{ $mission->signature_date }}" readonly />
                     </div>
 
-                    <x-tc-select name="people_id[]" label="Assign People" :options="$people->pluck('name', 'id')"
+                    <x-tc-select name="people_id[]" label="Assign People" :options="collect()"
                         hint="Multi people can select" multiple required>
                         @foreach($people as $id => $name)
-                            <option value="{{ $id }}" {{ in_array($id, $mission->people->pluck('id')->toArray()) ? 'selected' : '' }} label="{{ $name }}">
+                            <option value="{{ $id }}" {{ in_array($id, $mission->people->pluck('id')->toArray()) ? 'selected' : '' }}>
                                 {{ $name }}
                             </option>
                         @endforeach
@@ -73,12 +75,11 @@
 
 
                     <div class="flex justify-end space-x-4">
-                        <a href="{{ route('missions.index', [
-    'page' => request('page'),
-    'search' => request('search'),
-]) }}" class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600">←
-                            Cancel</a>
-                        <x-tc-button type="submit" label="Update Mission" />
+                        <x-tc-button :link="route('missions.index', [
+        'page' => request('page'),
+        'search' => request('search'),
+    ])" label="← Cancel" white />
+                        <x-tc-button type="submit" label="Update {{ $appTitle }}" />
                     </div>
                 </form>
             </div>

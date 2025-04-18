@@ -14,8 +14,7 @@
                     <div>
                         <h1 class="text-2xl font-semibold text-gray-800 dark:text-white">{{$appTitle}} Detail</h1>
                         <p class="text-sm text-gray-500 dark:text-gray-400">View {{$appTitle}} information with related
-                            people
-                            and department</p>
+                            missions</p>
                     </div>
 
 
@@ -42,6 +41,7 @@
                             <a href="{{ route('people.edit', $person) }}"
                                 class="text-sm text-blue-500 hover:underline">Edit</a>
                         </div>
+
                         <div class="text-gray-600 dark:text-gray-300 space-y-2">
                             <p><strong>Name:</strong> {{ $person->name }}</p>
                             <p><strong>Role:</strong> {{ $person->role }}</p>

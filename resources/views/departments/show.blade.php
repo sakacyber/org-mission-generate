@@ -14,8 +14,7 @@
                     <div>
                         <h1 class="text-2xl font-semibold text-gray-800 dark:text-white">{{$appTitle}} Detail</h1>
                         <p class="text-sm text-gray-500 dark:text-gray-400">View {{$appTitle}} information with related
-                            people
-                            and department</p>
+                            people and department</p>
                     </div>
 
 
@@ -25,7 +24,7 @@
         'search' => request('search'),
     ])" white />
                         <x-tc-button label="✏️ Edit {{$appTitle}}" :link="route('departments.edit', [
-        'department' => $department->id,
+        'department' => $department,
         'page' => request('page'),
         'search' => request('search'),
     ])" />
@@ -60,7 +59,7 @@
 
 
                 <!-- People in Department Card -->
-                <div class="p-6 mt-6 bg-white dark:bg-gray-800 shadow-lg rounded-2xl">
+                <div class="p-6 mt-6 bg-white dark:bg-gray-800 shadow rounded-xl">
                     <div class="mb-4">
                         <h3 class="text-lg font-semibold text-gray-800 dark:text-white">People in this Department</h3>
                         <p class="text-sm text-gray-500 dark:text-gray-400">List of assigned people</p>

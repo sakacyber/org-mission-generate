@@ -22,7 +22,7 @@ class MissionController extends Controller
     public function __construct()
     {
         // Share this variable with all views used by this controller
-        View::share('appTitle', 'Missions');
+        View::share('appTitle', 'Mission');
     }
 
     public function index(Request $request)
@@ -86,7 +86,9 @@ class MissionController extends Controller
     public function edit(Mission $mission)
     {
         $fields = ['id', 'name'];
-        $people = Person::orderBy('created_at', 'desc')->get();
+        $people = Person::orderBy('created_at', 'desc')
+            //->paginate(20, $fields)
+            ->pluck('name', 'id');
         return view('missions.edit', compact('mission', 'people'));
     }
 

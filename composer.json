@@ -20,6 +20,7 @@
         "maatwebsite/excel": "^3.1",
         "nesbot/carbon": "^3.9",
         "phpoffice/phpword": "*",
+        "rappasoft/laravel-livewire-tables": "^3.7",
         "wireui/wireui": "^2.4"
     },
     "require-dev": {

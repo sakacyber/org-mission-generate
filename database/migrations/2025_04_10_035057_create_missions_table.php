@@ -12,11 +12,14 @@ return new class extends Migration {
     {
         Schema::create('missions', function (Blueprint $table) {
             $table->id();
+            $table->string('uid')->unique();
             $table->string('goal');
             $table->string('place');
             $table->date('start_date');
             $table->date('end_date');
             $table->date('signature_date');
+            $table->string('travel')->nullable();
+            $table->string('sponsore')->nullable();
             $table->string('notes')->nullable();
             $table->timestamps();
         });

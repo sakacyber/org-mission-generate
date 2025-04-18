@@ -12,13 +12,13 @@
                 @if (session('success'))
                     <x-toast type="success" :message="session('success')" />
                 @endif
-                
+
                 @if (session('error'))
                     <x-toast type="error" :message="session('error')" />
                 @endif
 
                 <div class="p-4 justify-end flex">
-                    <x-tc-button link="{{ route('departments.create')}}">Add New {{$appTitle}}</x-tc-button>
+                    <x-tc-button link="{{ route('departments.create')}}" label="Add New {{$appTitle}}" />
                 </div>
 
                 <x-tc-card class="max-w">
@@ -33,31 +33,37 @@
                         </x-slot:heading>
 
                         @forelse ($departments as $dept)
-                            <x-tc-tr>
-                                <x-tc-td :label="$dept->id" />
-                                <x-tc-td :label="$dept->name" />
-                                <x-tc-td :label="$dept->people->count()" />
-                                <x-tc-td :label="$dept->notes" />
-                                <x-tc-td :label="$dept->created_at->format('d M Y')" />
+                                                <x-tc-tr>
+                                                    <x-tc-td :label="$dept->id" />
+                                                    <x-tc-td :label="$dept->name" />
+                                                    <x-tc-td :label="$dept->people->count()" />
+                                                    <x-tc-td :label="$dept->notes" />
+                                                    <x-tc-td :label="$dept->created_at->format('d M Y')" />
 
-                                <x-tc-td class="space-x-2">
-                                    <x-tc-dropdown>
-                                        <x-slot:trigger>
-                                            <x-tc-button icon="ellipsis-vertical" flat gray circle />
-                                        </x-slot:trigger>
-                                        <x-tc-dropdown-item label="View" icon="eye"
-                                            link="{{ route('departments.show', $dept) }}" />
-                                        <x-tc-dropdown-item label="Edit" icon="pencil"
-                                            link="{{ route('departments.edit', $dept) }}" />
-                                        <x-tc-dropdown-item label="Delete" icon="trash" @click="
-                                                                deleteUrl = '{{ route('departments.destroy', $dept->id) }}';
-                                                                showModal = true;
-                                                                itemName = '{{ $dept->name }}';
-                                                            " />
-                                    </x-tc-dropdown>
-                                </x-tc-td>
+                                                    <x-tc-td>
+                                                        <x-dropdown position="left">
+                                                            @slot('trigger')
+                                                            <x-tc-button icon="ellipsis-vertical" flat gray circle />
+                                                            @endslot
+                                                            <x-dropdown.item label="View" icon="eye" href="{{ route('departments.show', [
+                                'department' => $dept,
+                                'page' => request('page'),
+                                'search' => request('search'),
+                            ]) }}" />
+                                                            <x-dropdown.item label="Edit" icon="pencil" href="{{route('departments.edit', [
+                                'department' => $dept,
+                                'page' => request('page'),
+                                'search' => request('search'),
+                            ])}}" />
+                                                            <x-dropdown.item label="Delete" icon="trash" @click="
+                                                                                                                                        deleteUrl = '{{ route('departments.destroy', $dept) }}';
+                                                                                                                                        showModal = true;
+                                                                                                                                        itemName = '{{ $dept->name }}';
+                                                                                                                                    " />
+                                                        </x-dropdown>
+                                                    </x-tc-td>
 
-                            </x-tc-tr>
+                                                </x-tc-tr>
                         @empty
                             <x-tc-not-found />
                         @endforelse
@@ -75,7 +81,7 @@
                         </p>
 
                         <div class="flex justify-center gap-4">
-                            <button @click="showModal = false" class="btn btn-secondary">Cancel</button>
+                            <x-button @click="showModal = false" label="Cancel" gray />
 
                             <form :action="deleteUrl" method="POST">
                                 @csrf

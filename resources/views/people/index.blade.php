@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('People') }}
+            {{ $appTitle }}
         </h2>
     </x-slot>
 
@@ -19,7 +19,7 @@
 
 
                 <div class="p-4 justify-end flex">
-                    <x-tc-button link="{{ route('people.create')}}">Add New People</x-tc-button>
+                    <x-tc-button link="{{ route('people.create')}}">Add New {{ $appTitle }}</x-tc-button>
                 </div>
 
                 <x-tc-card class="max-w">
@@ -34,35 +34,38 @@
                         </x-slot:heading>
 
                         @forelse ($people as $person)
-                                                <x-tc-tr>
-                                                    <x-tc-td :label="$person->id" />
-                                                    <x-tc-td :label="$person->name" />
-                                                    <x-tc-td :label="$person->role" />
-                                                    <x-tc-td :label="$person->department->name" />
-                                                    <x-tc-td :label="$person->notes" />
+                                                                        <x-tc-tr>
+                                                                            <x-tc-td :label="$person->id" />
+                                                                            <x-tc-td :label="$person->name" />
+                                                                            <x-tc-td :label="$person->role" />
+                                                                            <x-tc-td :label="$person->department->name" />
+                                                                            <x-tc-td :label="$person->notes" />
 
-                                                    <x-tc-td class="space-x-2">
-                                                        <x-tc-dropdown>
-                                                            <x-slot:trigger>
-                                                                <x-tc-button icon="ellipsis-vertical" flat gray circle />
-                                                            </x-slot:trigger>
+                                                                            <x-tc-td>
+                                                                                <x-dropdown position="left">
+                                                                                    @slot('trigger')
+                                                                                    <x-tc-button icon="ellipsis-vertical" flat gray circle />
+                                                                                    @endslot
 
-                                                            <x-tc-dropdown-item label="View" icon="eye" link="{{ route('people.show', [
+                                                                                    <x-dropdown.item label="View" icon="eye" href="{{ route('people.show', [
                                 'person' => $person,
                                 'page' => request('page'),
                                 'search' => request('search'),
                             ]) }}" />
-                                                            <x-tc-dropdown-item label="Edit" icon="pencil" link="{{ route('people.edit', [
+                                                                                    <x-dropdown.item label="Edit" icon="pencil" href="{{ route('people.edit', [
                                 'person' => $person,
                                 'page' => request('page'),
                                 'search' => request('search'),
                             ]) }}" />
-                                                            <x-tc-dropdown-item label="Delete" icon="trash"
-                                                                link="{{ route('people.destroy', $person) }}" />
-                                                        </x-tc-dropdown>
-                                                    </x-tc-td>
+                                                                                    <x-dropdown.item label="Delete" icon="trash" @click="
+                                                                                            deleteUrl = '{{ route('people.destroy', $person) }}';
+                                                                                            showModal = true;
+                                                                                            itemName = '{{ $person->name }}';
+                                                                                        " />
+                                                                                    </x-dropdown>
+                                                                            </x-tc-td>
 
-                                                </x-tc-tr>
+                                                                        </x-tc-tr>
                         @empty
                             <x-tc-not-found />
                         @endforelse

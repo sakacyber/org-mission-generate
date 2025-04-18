@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('gender');
             $table->string('role')->nullable();
+            $table->string('handle')->nullable();
             $table->string('notes')->nullable();
             $table->foreignId('department_id')->constrained()->onDelete('cascade');
             $table->timestamps();

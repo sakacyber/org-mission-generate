@@ -24,7 +24,7 @@
 
 
                     <div class="space-x-2">
-                        <x-tc-button label="⬅ Back" :link="route('missions.index', [
+                        <x-tc-button label="⬅️ Back" :link="route('missions.index', [
         'page' => request('page'),
         'search' => request('search'),
     ])" white />
@@ -40,41 +40,50 @@
                 <!-- Mission Info Card -->
                 <div class="bg-white dark:bg-gray-800 shadow rounded-xl p-6 mb-6">
                     <h3 class="text-lg font-bold mb-4">Mission Overview</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-md">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-md ">
                         <div>
-                            <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200">🎯 Goal:</h2>
+                            <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200">🎯 Goal</h3>
                             <p class=" text-gray-600 dark:text-gray-300">{{ $mission->goal }}</p>
                         </div>
                         <div>
-                            <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200">📍 Location:</h2>
+                            <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200">📍 Location</h3>
                             <p class="text-gray-600 dark:text-gray-300">{{ $mission->place }}</p>
                         </div>
                         <div>
-                            <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200">📅 Mission Date:</h2>
+                            <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200">📅 Mission Date</h3>
                             <p class="text-gray-600 dark:text-gray-300">{{ formatKhmerDate($mission->start_date) }}</p>
                         </div>
                         <div>
-                            <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200">📅 Signature Date:</h2>
+                            <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200">📅 Signature Date</h3>
                             <p class="text-gray-600 dark:text-gray-300">{{ formatKhmerDate($mission->signature_date) }}
                             </p>
                         </div>
                         <div>
-                            <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200">📅 End Date:</h2>
+                            <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200">📅 End Date</h3>
                             <p class=" text-gray-600 dark:text-gray-300">{{ formatKhmerDate($mission->end_date) }}</p>
                         </div>
                         <div>
-                            <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200">📅 Create Date:</h2>
+                            <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200">📅 Create Date</h3>
                             <p class="text-gray-600 dark:text-gray-300">{{ formatKhmerDate($mission->created_at) }}</p>
                         </div>
                         <div>
-                            <h2 class="text-lg font-bold text-gray-700 dark:text-gray-200">👥 People Assign:</h2>
-                            <p class="text-gray-600 dark:text-gray-300">{{ $mission->people->count() }} People</p>
+                            <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200">🚌 Travel</h3>
+                            <p class="text-gray-600 dark:text-gray-300">{{ $mission->travel ?? '-'}}</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-700 dark:text-gray-200">💰 Sponsore:</h3>
+                            <p class="text-gray-600 dark:text-gray-300">{{ $mission->sponsore ?? '-' }}</p>
                         </div>
                     </div>
                 </div>
 
+                <div class="mt-6">
+                    <h2 class="text-lg font-semibold text-gray-800 dark:text-white">Department People</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">List of people in this mission</p>
+                </div>
+
                 <!-- People Involved Card -->
-                <div class="bg-white dark:bg-gray-800 shadow rounded-xl p-6">
+                <div class="bg-white dark:bg-gray-800 shadow rounded-xl p-6 mt-6">
                     <h3 class="text-lg font-bold mb-4">👥 People Assigned</h3>
                     <table class="min-w-full text-sm table-auto">
                         <thead>
