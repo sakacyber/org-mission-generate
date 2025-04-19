@@ -1,11 +1,9 @@
 <?php
 
-
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\PersonController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,16 +14,14 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
-
     Route::resource('people', PersonController::class);
     Route::resource('missions', MissionController::class);
     Route::resource('departments', DepartmentController::class);
-
 
     Route::get('missions/{id}/generate-docx', [MissionController::class, 'generateDocx'])->name('missions.generate-docx');
     Route::get('missions/{id}/generate-pdf', [MissionController::class, 'generatePdf'])->name('missions.generate-pdf');
@@ -35,7 +31,4 @@ Route::middleware([
 
     Route::get('departments/export/{format}', [DepartmentController::class, 'export'])->name('departments.export');
 
-
 });
-
-

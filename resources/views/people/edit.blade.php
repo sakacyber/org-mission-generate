@@ -20,7 +20,7 @@
                         @csrf
                         @method('PUT')
 
-                        <x-tc-input type="text" name="name" label="Name" value="{{ old('name', $person->name) }}"
+                        <x-input type="text" name="name" label="Name" value="{{ old('name', $person->name) }}"
                             required />
                         <x-tc-input type="text" name="role" label="Role" value="{{ old('role', $person->role) }}"
                             required />

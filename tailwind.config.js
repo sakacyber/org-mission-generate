@@ -1,6 +1,4 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
-import forms from '@tailwindcss/forms';
-import typography from '@tailwindcss/typography';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -19,11 +17,6 @@ export default {
         "./vendor/wireui/wireui/src/WireUi/**/*.php",
         "./vendor/wireui/wireui/src/Components/**/*.php",
 
-
-        './vendor/rappasoft/laravel-livewire-tables/resources/views/*.blade.php',
-        './vendor/rappasoft/laravel-livewire-tables/resources/views/**/*.blade.php',
-        './app/Livewire/*.php',
-        './app/Livewire/**/*.php',
 	],
 
     theme: {
@@ -32,11 +25,22 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                primary: "#289cd9",
-                secondary: "#eb1d90",
+                    primary: '#289cd9', // Coral
+                    secondary: '#FFD700', // Gold
+                    accent: '#32CD32', // Lime Green
+                    neutral: '#F5F5DC', // Beige
+                    info: '#289cd9', // Turquoise
+                    success: '#3CB371', // Medium Sea Green
+                    warning: '#FFA500', // Orange
+                    error: '#FF4500', // Orange Red
             },
         },
     },
 
-    plugins: [forms, typography],
+    plugins: [
+        require('@tailwindcss/forms'), 
+        require('@tailwindcss/typography'), 
+        require('daisyui')
+    ],
+
 };

@@ -60,7 +60,7 @@
                                                                                     <x-dropdown.item label="Delete" icon="trash" @click="
                                                                                             deleteUrl = '{{ route('people.destroy', $person) }}';
                                                                                             showModal = true;
-                                                                                            itemName = '{{ $person->name }}';
+                                                                                            itemName = '{{ $dept->name }}';
                                                                                         " />
                                                                                     </x-dropdown>
                                                                             </x-tc-td>

@@ -21,12 +21,12 @@ class DepartmentController extends Controller
     {
         $search = $request->get('search');
         $departments = Department::when($search, function ($query, $search) {
-            return $query->where('name', 'like', '%' . $search . '%');
+            return $query->where('name', 'like', '%'.$search.'%');
         })
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
 
-        return view('departments.index', compact('departments')); 
+        return view('departments.index', compact('departments'));
     }
 
     /**
@@ -34,7 +34,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        return view('departments.create'); 
+        return view('departments.create');
     }
 
     /**
@@ -48,6 +48,7 @@ class DepartmentController extends Controller
         ]);
 
         Department::create($data);
+
         return redirect()->route('departments.index')->with('success', 'Department created successfully.');
     }
 
@@ -57,7 +58,8 @@ class DepartmentController extends Controller
     public function show(Department $department)
     {
         $people = $department->people()->paginate(10);
-        return view('departments.show', compact('department', 'people')); 
+
+        return view('departments.show', compact('department', 'people'));
     }
 
     /**
@@ -65,7 +67,7 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
-        return view('departments.edit', compact('department')); 
+        return view('departments.edit', compact('department'));
     }
 
     /**
@@ -74,6 +76,7 @@ class DepartmentController extends Controller
     public function update(Request $request, Department $department)
     {
         $department->update($request->all());
+
         return redirect()->route('departments.index')->with('success', 'Department updated successfully.');
     }
 
@@ -83,6 +86,7 @@ class DepartmentController extends Controller
     public function destroy(Department $department)
     {
         $department->delete();
+
         return redirect()->route('departments.index')->with('success', 'Departments deleted successfully.');
     }
 
@@ -103,7 +107,7 @@ class DepartmentController extends Controller
                 'Content-Disposition' => 'attachment; filename="departments.csv"',
             ]);
         } elseif ($format === 'xlsx') {
-            return \Maatwebsite\Excel\Facades\Excel::download(new DepartmentsExport(), 'departments.xlsx');
+            return \Maatwebsite\Excel\Facades\Excel::download(new DepartmentsExport, 'departments.xlsx');
         }
 
         abort(404);

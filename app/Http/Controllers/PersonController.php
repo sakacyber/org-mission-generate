@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Person;
 use App\Models\Department;
+use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
 class PersonController extends Controller
 {
-
     public function __construct()
     {
         // Share this variable with all views used by this controller
@@ -23,11 +22,12 @@ class PersonController extends Controller
     {
         $search = $request->get('search');
         $people = Person::when($search, function ($query, $search) {
-            return $query->where('name', 'like', '%' . $search . '%');
+            return $query->where('name', 'like', '%'.$search.'%');
         })
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
-        return view('people.index', compact('people')); 
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('people.index', compact('people'));
     }
 
     /**
@@ -36,7 +36,8 @@ class PersonController extends Controller
     public function create()
     {
         $departments = Department::paginate(20)->pluck('name', 'id');
-        return view('people.create', compact('departments')); 
+
+        return view('people.create', compact('departments'));
     }
 
     /**
@@ -52,6 +53,7 @@ class PersonController extends Controller
         ]);
 
         Person::create($data);
+
         return redirect()->route('people.index')->with('success', 'Person created successfully.');
     }
 
@@ -60,7 +62,7 @@ class PersonController extends Controller
      */
     public function show(Person $person)
     {
-        return view('people.show', compact('person')); 
+        return view('people.show', compact('person'));
     }
 
     /**
@@ -69,6 +71,7 @@ class PersonController extends Controller
     public function edit(Person $person)
     {
         $departments = Department::paginate(20)->pluck('name', 'id');
+
         return view('people.edit', compact('person', 'departments'));
     }
 
@@ -85,6 +88,7 @@ class PersonController extends Controller
         ]);
 
         $person->update($data);
+
         return redirect()->route('people.index')->with('success', 'Person updated successfully.');
     }
 
@@ -94,6 +98,7 @@ class PersonController extends Controller
     public function destroy(Person $person)
     {
         $person->delete();
+
         return redirect()->route('people.index')->with('success', 'Person deleted successfully.');
     }
 }

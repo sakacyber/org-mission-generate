@@ -2,22 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use PhpOffice\PhpWord\TemplateProcessor;
-use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
+use App\Exports\MissionsExport;
+use App\Models\Department;
 use App\Models\Mission;
 use App\Models\Person;
-use App\Models\Department;
-use App\Exports\MissionsExport;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Developermithu\Tallcraftui\Traits\WithTcToast;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class MissionController extends Controller
 {
-
     use WithTcToast;
-
 
     public function __construct()
     {
@@ -87,8 +85,9 @@ class MissionController extends Controller
     {
         $fields = ['id', 'name'];
         $people = Person::orderBy('created_at', 'desc')
-            //->paginate(20, $fields)
+            // ->paginate(20, $fields)
             ->pluck('name', 'id');
+
         return view('missions.edit', compact('mission', 'people'));
     }
 
@@ -116,6 +115,7 @@ class MissionController extends Controller
     public function destroy(Mission $mission)
     {
         $mission->delete();
+
         return redirect()->route('missions.index', [
             'page' => request('page'),
             'search' => request('search'),
@@ -139,7 +139,7 @@ class MissionController extends Controller
                 'Content-Disposition' => 'attachment; filename="missions.csv"',
             ]);
         } elseif ($format === 'xlsx') {
-            return \Maatwebsite\Excel\Facades\Excel::download(new MissionsExport(), 'missions.xlsx');
+            return \Maatwebsite\Excel\Facades\Excel::download(new MissionsExport, 'missions.xlsx');
         }
 
         abort(404);
@@ -150,7 +150,7 @@ class MissionController extends Controller
         $mission = Mission::findOrFail($id);
         $templatePath = storage_path('app/templates/mission_template_kh.docx');
 
-        if (!file_exists($templatePath)) {
+        if (! file_exists($templatePath)) {
             abort(404, 'Template not found!');
         }
 
@@ -174,13 +174,13 @@ class MissionController extends Controller
 
         // Set the people list
         $people = $mission->people->map(function ($p) {
-            return "• " . $p->name . ' (' . $p->department->name . ')';
+            return '• '.$p->name.' ('.$p->department->name.')';
         })->implode("\n \t\t\t\t");
         $template->setValue('people_list', $people, true);
         $template->setValue('go_date', toKhmerNumber($startDate->subDay()->translatedFormat('ថ្ងៃទីd ខែF ឆ្នាំY')));
         $template->setValue('back_date', toKhmerNumber($endDate->addDay()->translatedFormat('ថ្ងៃទីd ខែF ឆ្នាំY')));
 
-        $fileName = 'mission_' . $mission->id . '.docx';
+        $fileName = 'mission_'.$mission->id.'.docx';
         $tempFilePath = storage_path("app/public/$fileName");
         $template->saveAs($tempFilePath);
 
@@ -193,13 +193,14 @@ class MissionController extends Controller
         $mission->ceo_signature_date = Carbon::parse($mission->ceo_signature_date)->translatedFormat('d-m-Y ម.អ');
 
         $pdf = Pdf::loadView('pdf.mission', compact('mission'));
-        return $pdf->download('mission_' . $mission->id . '.pdf');
+
+        return $pdf->download('mission_'.$mission->id.'.pdf');
     }
 
     public function exportDocx(Mission $mission)
     {
         $templatePath = storage_path('app/templates/mission_template.docx');
-        $fileName = 'mission_' . $mission->id . '.docx';
+        $fileName = 'mission_'.$mission->id.'.docx';
 
         $template = new TemplateProcessor($templatePath);
 
@@ -209,7 +210,7 @@ class MissionController extends Controller
         $template->setValue('signature_date', $mission->signature_date);
 
         $peopleList = $mission->people->map(function ($person) {
-            return $person->name . ' (' . $person->department->name . ')';
+            return $person->name.' ('.$person->department->name.')';
         })->implode("\n");
 
         $template->setValue('people_list', $peopleList);

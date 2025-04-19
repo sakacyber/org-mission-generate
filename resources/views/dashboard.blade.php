@@ -29,7 +29,6 @@
             </div>
 
             <div class="bg-white dark:bg-gray-800 mt-6 p-6 rounded-lg text-sm">
-                <livewire:mission-table />
 
             </div>
 

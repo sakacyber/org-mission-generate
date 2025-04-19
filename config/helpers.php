@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('toKhmerNumber')) {
+if (! function_exists('toKhmerNumber')) {
     function toKhmerNumber($number)
     {
         return strtr($number, [
@@ -13,12 +13,12 @@ if (!function_exists('toKhmerNumber')) {
             '6' => '៦',
             '7' => '៧',
             '8' => '៨',
-            '9' => '៩'
+            '9' => '៩',
         ]);
     }
 }
 
-if (!function_exists('formatKhmerDate')) {
+if (! function_exists('formatKhmerDate')) {
     function formatKhmerDate($date)
     {
         $days = ['អាទិត្យ', 'ច័ន្ទ', 'អង្គារ', 'ពុធ', 'ព្រហ', 'សុក្រ', 'សៅរ៍'];
@@ -35,7 +35,7 @@ if (!function_exists('formatKhmerDate')) {
             'កញ្ញា',
             'តុលា',
             'វិច្ឆិកា',
-            'ធ្នូ'
+            'ធ្នូ',
         ];
 
         $carbon = \Carbon\Carbon::parse($date);
@@ -48,7 +48,7 @@ if (!function_exists('formatKhmerDate')) {
     }
 }
 
-if (!function_exists("formatDate")) {
+if (! function_exists('formatDate')) {
     function formatDate($date, $format = 'd-M-Y')
     {
         return \Carbon\Carbon::parse($date)->translatedFormat($format);

@@ -15,6 +15,6 @@ class MissionsExport implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        return ['Id', 'Goal', 'Start Date','End Date', 'Signature Date', 'Persion Id'];
+        return ['Id', 'Goal', 'Start Date', 'End Date', 'Signature Date', 'Persion Id'];
     }
 }

@@ -23,7 +23,7 @@
                 @endif
 
                 <div class="p-4 justify-end flex">
-                    <x-tc-button><a href="{{ route('missions.create')}}">Add New {{ $appTitle }}</a></x-tc-button>
+                    <x-button class="btn btn-primary"><a href="{{ route('missions.create')}}">Add New {{ $appTitle }}</a></x-button>
                 </div>
 
                 <x-tc-card class="max-w bg-white dark:bg-gray-800">
@@ -90,7 +90,7 @@
                 </x-tc-card>
 
 
-                <x-tc-button label="MD" x-on:click="$openModal('blur-md')" primary />
+                <x-button label="MD" class="btn" x-on:click="$openModal('blur-md')" primary />
 
                 <x-modal name="blur-md" blur="md">
                     <x-card title="Blur SM">

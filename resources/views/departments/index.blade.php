@@ -56,10 +56,10 @@
                                 'search' => request('search'),
                             ])}}" />
                                                             <x-dropdown.item label="Delete" icon="trash" @click="
-                                                                                                                                        deleteUrl = '{{ route('departments.destroy', $dept) }}';
-                                                                                                                                        showModal = true;
-                                                                                                                                        itemName = '{{ $dept->name }}';
-                                                                                                                                    " />
+                                                        deleteUrl = '{{ route('departments.destroy', $dept) }}';
+                                                        showModal = true;
+                                                        itemName = '{{ $dept->name }}';
+                                                    " />
                                                         </x-dropdown>
                                                     </x-tc-td>
 
